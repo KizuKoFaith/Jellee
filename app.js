@@ -1,12 +1,18 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const fs = require("fs");
+const jelleeRoutes = require("./src/routes/dataRoutes");
 
 const app = express();
-const PORT = 5000;
+const port = 5000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.post("/add-data", (req, res) => {
-  const { id, title, cover, status, type, official, translationBy, rating, popularity, genres, synopsis, epubLink, pdfLink } = req.body;
+app.get("/", (req, res) => {
+  res.send("Welcome to Jellee Api - your destination for scrapping data from various novel & manga sites! Seamlessly access  id, title, image and more.");
+});
+
+app.use("/novel", jelleeRoutes);
+
+// Start server
+app.listen(port, () => {
+  console.log(`App listening on http://localhost:${port}`);
 });

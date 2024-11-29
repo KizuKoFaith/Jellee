@@ -212,7 +212,7 @@ async function getSearch(req, res) {
   if(!query || query.trim() == ""){
     return res.status(400).send({
         success: true,
-        message: "No novels found!"
+        message: "Quary us required!"
     });
   }
   try {

@@ -54,7 +54,7 @@ async function scrapeInfo(id) {
     throw error;
   }
 }
-async function scrapeSearch(query) {
+/*async function scrapeSearch(query) {
   try {
     const response = await axios.get(BASE_DATA);
     const novels = response.data;
@@ -69,6 +69,35 @@ async function scrapeSearch(query) {
     );
 
     if (!novel) {
+      throw new Error(`No novel found with a similar title to: ${query}`);
+    }
+
+    return novel;
+  } catch (error) {
+    console.error("Error in query:", error.message);
+    throw error;
+  }
+} */
+async function scrapeSearch(query) {
+  try {
+    const response = await axios.get(BASE_DATA);
+    const novels = response.data;
+
+    if (!novels || !Array.isArray(novels)) {
+      throw new Error("Invalid data format or empty data from BASE_DATA.");
+    }
+
+    // Normalize and sanitize both the query and titles
+    const sanitizeString = (str) => str.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase().trim();
+
+    const sanitizedQuery = sanitizeString(query);
+
+    // Filter novels based on sanitized query
+    const novel = novels.filter(novel =>
+      sanitizeString(novel.title).includes(sanitizedQuery)
+    );
+
+    if (!novel || novel.length === 0) {
       throw new Error(`No novel found with a similar title to: ${query}`);
     }
 

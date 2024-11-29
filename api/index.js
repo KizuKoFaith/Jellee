@@ -1,5 +1,5 @@
 const express = require("express");
-const jelleeNovelRoutes = require("./src/routes/jelleeRouter");
+const jelleeNovelRoutes = require("../src/routes/jelleeRouter");
 
 const app = express();
 const port = 5000;
@@ -12,7 +12,5 @@ app.get("/", (req, res) => {
 
 app.use("/novel", jelleeNovelRoutes);
 
-// Start server
-app.listen(port, () => {
-  console.log(`App listening on http://localhost:${port}`);
-});
+// Start servermodule.exports = app;
+module.exports = app;

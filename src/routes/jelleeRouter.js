@@ -3,8 +3,9 @@ const {
   getLatestUpdate,
   getMostRated,
   getMostPopular,
-  getInfo
-} = require("../controllers/dataController");
+  getInfo,
+  getSearch
+} = require("../controllers/jelleeController");
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.get("/jellee/latest", getLatestUpdate);
 router.get("/jellee/most-rated", getMostRated);
 router.get("/jellee/popular", getMostPopular);
 router.get("/jellee/info", getInfo);
+
+router.get("/jellee/search", getSearch);
 
 module.exports = router;

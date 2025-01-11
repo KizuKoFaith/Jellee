@@ -374,12 +374,19 @@ async function getByPublisher(req, res) {
 }
 
 async function getByFilter(req, res) {
-  const type = req.query.type || "all";
+  const type = req.query.type || null;
   const genre = req.query.genre ? req.query.genre.split(",") : [];
+  const status = req.query.status ? req.query.status.toLowerCase() : null;
+  const publisher = req.query.publisher ? req.query.publisher.toLowerCase() : null;
   
   try {
     // Fetch all filtered data
-    const novels = Array.isArray(await filterScrap({ genres: genre })) ? await filterScrap({ genres: genre }) : [];
+    /* const novels = Array.isArray(await filterScrap({ genres: genre })) ? await filterScrap({ genres: genre }) : [];*/
+    const novels = Array.isArray(await filterScrap({ 
+      genres: genre, 
+      status: status, 
+      publisher: publisher 
+    })) ? await filterScrap({ genres: genre, status: status, publisher: publisher }) : [];
 
     // Handle empty data
     if (novels.length === 0) {

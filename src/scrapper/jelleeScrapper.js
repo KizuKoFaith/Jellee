@@ -115,26 +115,54 @@ async function scrapeByPublisher(query, sortBy) {
   }
 }
 
-async function filterScrap({ genres = [] }) {
+/*async function filterScrap({ genres = [], status, publisher }) {
   try {
-    // Fetch all novels
+    // Fetch data
     const response = await axios.get(BASE_DATA);
-    let novels = response.data;
+    const data = response.data;
 
-    // Filter by genres if provided
-    if (genres.length > 0) {
-      const lowerCaseGenres = genres.map((genre) => genre.toLowerCase());
-      novels = novels.filter((novel) =>
-        novel.genres.some((novelGenre) =>
-          lowerCaseGenres.includes(novelGenre.toLowerCase())
-        )
-      );
-    }
-
-    return novels;
+    // Filter data based on conditions
+    
+    return data.filter(item => {
+      const matchesStatus = !status || item.status.toLowerCase() === status.toLowerCase();
+      const matchesGenres = genres.map((genre) => genre.toLowerCase());
+      item.genres.some((novelGenre) =>
+            matchesGenres.includes(novelGenre.toLowerCase())
+          );
+      const matchesPublisher = !publisher || item.translation.toLowerCase() === publisher.toLowerCase();
+      
+      return matchesStatus && matchesGenres && matchesPublisher;
+    });
   } catch (error) {
-    console.error("Error in filterScrap:", error.message);
     throw error;
+  }
+} */
+
+async function filterScrap({ genres = [], status, publisher }) {
+  try {
+    // Fetch data
+    const response = await axios.get(BASE_DATA);
+    const data = response.data;
+
+    // Filter data based on conditions
+    return data.filter(item => {
+      const matchesStatus = !status || item.status.toLowerCase() === status.toLowerCase();
+
+      // Check if item genres match any of the provided genres
+      const matchesGenres = 
+        genres.length === 0 || // If no genres are provided, always match
+        item.genres.some(novelGenre => 
+          genres.map(genre => genre.toLowerCase()).includes(novelGenre.toLowerCase())
+        );
+
+      const matchesPublisher = !publisher || item.translation.toLowerCase() === publisher.toLowerCase();
+
+      return matchesStatus && matchesGenres && matchesPublisher;
+    });
+  } catch (error) {
+    // Handle error if fetching or filtering fails
+    console.error("Error fetching or filtering data:", error);
+    throw error; // Rethrow the error if necessary for further handling
   }
 }
 

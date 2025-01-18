@@ -74,9 +74,9 @@ async function scrapeSearch(query) {
       sanitizeString(novel.title).includes(sanitizedQuery)
     );
 
-    if (!novel || novel.length === 0) {
+   /* if (!novel || novel.length === 0) {
       throw new Error(`No novel found with a similar title to: ${query}`);
-    }
+    } */
 
     return novel;
   } catch (error) {

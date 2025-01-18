@@ -222,8 +222,11 @@ async function getSearch(req, res) {
   try {
     // Fetch all filtered data
     const novels = Array.isArray(await scrapeSearch(query)) ? await scrapeSearch(query) : [];
-   //const novels = scrapeSearch(query);
-
+   /*let novels = scrapeSearch(query);
+   if(!Array.isArray(novels)) {
+     novels = [];
+   } */
+   
     // Handle empty data
     if (novels.length === 0) {
       return res.status(200).send({
